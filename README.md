@@ -115,15 +115,29 @@ valid_dir = 'data/NEU Metal Surface Defects Data/valid'
 
 ---
 
-## Key Results
+## Results
 
-| Model | Test Accuracy |
-|-------|--------------|
-| CNN   | See notebook |
-| SVM (HOG + RBF kernel) | See notebook |
-| Random Forest (HOG + GridSearch) | See notebook |
+| Model | Test Accuracy | Test Loss |
+|-------|:------------:|:---------:|
+| **CNN** | **97.22%** | 0.100 |
+| SVM (HOG + RBF kernel, C=10) | 86.11% | — |
+| Random Forest (HOG + GridSearchCV) | 86.11% | — |
 
-Evaluation metrics include accuracy, precision, recall, F1-score, and confusion matrices for all three models. t-SNE and PCA visualizations are provided for feature space analysis.
+### CNN Training Summary
+- Trained for 25 epochs on Google Colab (T4 GPU)
+- Best validation accuracy: **100%** (epoch 25, val_loss: 0.022)
+- Optimizer: Adam; learning rate reduced to 2e-4 at epoch 21 via ReduceLROnPlateau
+- Final training accuracy: ~97.6%
+
+### Classical Models
+Both SVM and Random Forest used HOG features extracted from grayscale images.  
+SVM was trained on the combined train+validation set; Random Forest was tuned with GridSearchCV  
+(`n_estimators=200, max_depth=20, min_samples_split=10, min_samples_leaf=2, max_features='sqrt'`).
+
+### Key Takeaway
+The CNN outperforms both classical approaches by ~11 percentage points on the test set,  
+demonstrating the advantage of learned spatial features over hand-crafted HOG descriptors  
+for fine-grained texture-based defect classification.
 
 ---
 
